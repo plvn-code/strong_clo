@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Monogram } from "@/components/Monogram";
+import { Lockup } from "@/components/Wordmark";
 import { IconArrow, IconTelegram } from "@/components/Icons";
 import { edImg } from "@/lib/catalog";
 import { site } from "@/lib/site";
@@ -16,7 +17,10 @@ export default function AboutPage() {
         <div className="about-hero-copy">
           <Monogram className="about-mono" />
           <p className="eyebrow">Про бренд</p>
-          <h1 className="hero-mast is-sm">STRONG</h1>
+          <h1 className="hero-mast">
+            <span className="sr-only">STRONG</span>
+            <Lockup className="is-light" />
+          </h1>
         </div>
       </section>
 

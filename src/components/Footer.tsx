@@ -3,6 +3,7 @@ import { CATEGORIES } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { IconArrow, IconInstagram, IconTelegram } from "./Icons";
 import { Monogram } from "./Monogram";
+import { Lockup } from "./Wordmark";
 
 export function Footer() {
   return (
@@ -63,8 +64,8 @@ export function Footer() {
         </div>
       </div>
 
-      <div className="ftr-mast" aria-hidden>
-        STRONG
+      <div className="ftr-mast wrap" aria-hidden>
+        <Lockup />
       </div>
 
       <div className="wrap ftr-legal">

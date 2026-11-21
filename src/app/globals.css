@@ -401,15 +401,10 @@ svg {
   align-items: center;
   gap: 10px;
 }
-.hdr-mono {
-  width: 26px;
-  height: 27px;
-}
 .hdr-word {
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0.42em;
-  margin-right: -0.42em;
+  display: block;
+  height: 17px;
+  width: auto;
 }
 .ico {
   position: relative;
@@ -446,26 +441,17 @@ svg {
 .hide-s {
   display: none;
 }
-@media (max-width: 380px) {
+@media (max-width: 360px) {
   .hdr-word {
-    font-size: 13px;
-    letter-spacing: 0.34em;
-    margin-right: -0.34em;
-  }
-  .hdr-mono {
-    width: 22px;
+    height: 15px;
   }
 }
 @media (min-width: 760px) {
   .hide-s {
     display: grid;
   }
-  .hdr-mono {
-    width: 30px;
-    height: 31px;
-  }
   .hdr-word {
-    font-size: 17px;
+    height: 20px;
   }
 }
 @media (min-width: 1200px) {
@@ -727,14 +713,15 @@ svg {
   padding: 0 var(--g) calc(18px + env(safe-area-inset-bottom));
 }
 .hero-mast {
-  /* «STRONG» in Manrope 200 is ~3.76em wide → fills the line between the gutters */
-  font-size: calc((100vw - 2 * var(--g)) / 3.78);
-  font-weight: 200;
-  line-height: 0.8;
-  letter-spacing: -0.015em;
-  text-transform: uppercase;
-  margin: 0 0 18px -0.04em;
-  white-space: nowrap;
+  margin: 0 0 20px;
+  font-weight: 400;
+  line-height: 0;
+}
+/* the client's wordmark (vector) fills the line between the gutters */
+.mast-word {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .hero-bar {
@@ -1571,15 +1558,42 @@ svg {
   grid-column: 1 / -1;
 }
 .ftr-mast {
-  font-size: calc((100vw - 2 * var(--g)) / 3.78);
-  font-weight: 200;
-  line-height: 0.74;
-  letter-spacing: -0.015em;
-  text-align: center;
-  white-space: nowrap;
-  color: rgba(255, 255, 255, 0.94);
-  margin-bottom: -0.02em;
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  padding-bottom: 40px;
+  color: var(--paper);
   user-select: none;
+}
+.ftr-mast .lockup {
+  width: 100%;
+}
+
+/* ---------- logo lockup: wordmark + «UKRAINIAN BRAND» ---------- */
+.lockup {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9em;
+  font-size: clamp(9px, 1.25vw, 18px);
+}
+.lockup-word {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.lockup-sub {
+  font-size: 1em;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  margin-right: -0.32em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+@media (min-width: 960px) {
+  .ftr-mast {
+    padding-bottom: 56px;
+  }
 }
 .ftr-legal {
   display: flex;
@@ -2938,4 +2952,10 @@ svg {
   width: 72px;
   height: 75px;
   color: var(--cocoa);
+}
+
+/* about hero lockup */
+.about-hero-copy .lockup {
+  width: 100%;
+  align-items: flex-start;
 }

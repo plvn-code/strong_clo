@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { edImg } from "@/lib/catalog";
+import { Wordmark } from "./Wordmark";
 
 /** Each slide is a triptych on desktop; phones show only the first frame. */
 const SLIDES = [
@@ -57,7 +58,7 @@ export function HeroSlides() {
       <div className="hero-copy">
         <h1 className="hero-mast">
           <span className="sr-only">STRONG — український бренд жіночого одягу</span>
-          <span aria-hidden>STRONG</span>
+          <Wordmark className="mast-word" title="" />
         </h1>
         <div className="hero-bar">
           <Link href={SLIDES[i].href} className="hero-label">

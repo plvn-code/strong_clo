@@ -9,6 +9,7 @@ import { site } from "@/lib/site";
 import { useStore } from "@/lib/store";
 import { IconBag, IconHeart, IconInstagram, IconSearch, IconTelegram } from "./Icons";
 import { Monogram } from "./Monogram";
+import { Wordmark } from "./Wordmark";
 
 const NOTES = [
   "Замовлення на сайті — реквізити для оплати менеджер надішле в Telegram",
@@ -82,8 +83,7 @@ export function Header() {
           </div>
 
           <Link href="/" className="hdr-logo" aria-label="STRONG — на головну">
-            <Monogram className="hdr-mono" />
-            <span className="hdr-word">STRONG</span>
+            <Wordmark className="hdr-word" />
           </Link>
 
           <div className="hdr-right">
