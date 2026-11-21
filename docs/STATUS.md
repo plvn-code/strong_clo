@@ -9,7 +9,7 @@
 
 ## Next
 - **Telegram bot:** create a bot in @BotFather, add it to the managers' chat (or the manager starts it), set `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` (.env.local / Vercel env).
-- GitHub repo + Vercel — ask the user.
+- GitHub: github.com/plvn-code/strong_clo (public, main, pushed 2026-11-21). Vercel — ask the user.
 - Domain, then `NEXT_PUBLIC_SITE_URL` + `NEXT_PUBLIC_ALLOW_INDEXING=true`.
 
 ## Open questions for the client
