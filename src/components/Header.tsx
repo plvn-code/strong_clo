@@ -1,14 +1,12 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CATEGORIES, PRODUCTS, img } from "@/lib/catalog";
+import { CATEGORIES } from "@/lib/catalog";
 import { site } from "@/lib/site";
 import { useStore } from "@/lib/store";
-import { IconBag, IconHeart, IconInstagram, IconSearch, IconTelegram } from "./Icons";
-import { Monogram } from "./Monogram";
+import { IconBag, IconChevron, IconClose, IconHeart, IconInstagram, IconSearch, IconTelegram } from "./Icons";
 import { Wordmark } from "./Wordmark";
 
 const NOTES = [
@@ -31,7 +29,6 @@ export function Header() {
   const { count, openBag, wishlist, ready } = useStore();
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState(false);
-  const [hover, setHover] = useState<number>(CATEGORIES[0].cover);
   const [q, setQ] = useState("");
   const overHero = pathname === "/" || pathname === "/about";
 
@@ -51,8 +48,7 @@ export function Header() {
     return () => window.removeEventListener("keydown", esc);
   }, [menu]);
 
-  const solid = !overHero || scrolled || menu;
-  const counts = (id: string) => PRODUCTS.filter((p) => p.category === id).length;
+  const solid = !overHero || scrolled;
 
   return (
     <>
@@ -66,7 +62,7 @@ export function Header() {
         </div>
       </div>
 
-      <header className={`hdr${solid ? " is-solid" : ""}${menu ? " is-open" : ""}`}>
+      <header className={`hdr${solid ? " is-solid" : ""}`}>
         <div className="hdr-row">
           <div className="hdr-left">
             <button className="burger" aria-label={menu ? "Закрити меню" : "Меню"} aria-expanded={menu} onClick={() => setMenu((v) => !v)}>
@@ -103,61 +99,77 @@ export function Header() {
       </header>
 
       <div className={`menu${menu ? " is-open" : ""}`} aria-hidden={!menu} inert={!menu}>
-        <div className="menu-inner">
-          <div className="menu-main">
-            <form
-              className="menu-search"
-              role="search"
-              onSubmit={(e) => {
-                e.preventDefault();
-                router.push(`/catalog${q.trim() ? `?q=${encodeURIComponent(q.trim())}` : ""}`);
-                setMenu(false);
-              }}
-            >
-              <IconSearch />
-              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Пошук: пуховик, костюм, шоколадний…" aria-label="Пошук" />
-            </form>
-
-            <nav className="menu-links" aria-label="Категорії">
-              <Link href="/catalog?c=new" className="menu-link" onMouseEnter={() => setHover(4013)}>
-                <span>Новинки</span>
-                <em>AW 26/27</em>
-              </Link>
-              {CATEGORIES.map((c) => (
-                <Link key={c.id} href={`/catalog?c=${c.id}`} className="menu-link" onMouseEnter={() => setHover(c.cover)}>
-                  <span>{c.name}</span>
-                  <em>{counts(c.id)}</em>
-                </Link>
-              ))}
-              <Link href="/catalog" className="menu-link" onMouseEnter={() => setHover(4024)}>
-                <span>Весь каталог</span>
-                <em>{PRODUCTS.length}</em>
-              </Link>
-            </nav>
-
-            <div className="menu-sub">
-              <Link href="/about">Про бренд</Link>
-              <Link href="/info/delivery">Доставка та оплата</Link>
-              <Link href="/info/returns">Обмін і повернення</Link>
-              <Link href="/info/sizes">Розміри</Link>
-              <Link href="/info/contacts">Контакти</Link>
-            </div>
-
-            <div className="menu-social">
-              <a href={site.managerUrl} target="_blank" rel="noopener noreferrer">
-                <IconTelegram /> @{site.manager}
-              </a>
-              <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer">
-                <IconInstagram /> @{site.instagram}
-              </a>
-            </div>
+        <button className="menu-scrim" tabIndex={-1} aria-label="Закрити меню" onClick={() => setMenu(false)} />
+        <aside
+          className="menu-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Меню"
+          onClick={(e) => {
+            // close on every link — also when only ?c= changes and the pathname stays /catalog
+            if ((e.target as HTMLElement).closest("a")) setMenu(false);
+          }}
+        >
+          <div className="menu-top">
+            <button className="ico" aria-label="Закрити меню" onClick={() => setMenu(false)}>
+              <IconClose />
+            </button>
+            <Link href="/" className="menu-logo" aria-label="STRONG — на головну">
+              <Wordmark />
+            </Link>
           </div>
 
-          <div className="menu-visual" aria-hidden>
-            <Image key={hover} src={img(hover)} alt="" fill sizes="40vw" className="menu-img" />
-            <Monogram className="menu-mono" />
+          <form
+            className="menu-search"
+            role="search"
+            onSubmit={(e) => {
+              e.preventDefault();
+              router.push(`/catalog${q.trim() ? `?q=${encodeURIComponent(q.trim())}` : ""}`);
+              setMenu(false);
+            }}
+          >
+            <IconSearch />
+            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Пошук" aria-label="Пошук по каталогу" />
+          </form>
+
+          <nav className="menu-links" aria-label="Категорії">
+            <Link href="/catalog?c=new" className="menu-link">
+              Fall Winter 26/27
+              <IconChevron />
+            </Link>
+            {CATEGORIES.map((c) => (
+              <Link key={c.id} href={`/catalog?c=${c.id}`} className="menu-link">
+                {c.name}
+                <IconChevron />
+              </Link>
+            ))}
+            <Link href="/catalog?c=bestsellers" className="menu-link">
+              Бестселери
+              <IconChevron />
+            </Link>
+            <Link href="/catalog" className="menu-link">
+              Весь каталог
+              <IconChevron />
+            </Link>
+          </nav>
+
+          <div className="menu-sub">
+            <Link href="/about">Про бренд</Link>
+            <Link href="/info/delivery">Доставка та оплата</Link>
+            <Link href="/info/returns">Обмін і повернення</Link>
+            <Link href="/info/sizes">Розміри</Link>
+            <Link href="/info/contacts">Контакти</Link>
           </div>
-        </div>
+
+          <div className="menu-social">
+            <a href={site.managerUrl} target="_blank" rel="noopener noreferrer">
+              <IconTelegram /> @{site.manager}
+            </a>
+            <a href={site.instagramUrl} target="_blank" rel="noopener noreferrer">
+              <IconInstagram /> @{site.instagram}
+            </a>
+          </div>
+        </aside>
       </div>
     </>
   );

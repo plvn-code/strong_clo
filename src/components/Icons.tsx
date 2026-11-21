@@ -55,3 +55,8 @@ export const IconCheck = ({ className }: P) => (
     <path d="m5 12.5 4.5 4.5L19 7.5" />
   </svg>
 );
+export const IconChevron = ({ className }: P) => (
+  <svg className={className} viewBox="0 0 24 24" aria-hidden {...base}>
+    <path d="m9 5.5 6.5 6.5L9 18.5" />
+  </svg>
+);
