@@ -27,7 +27,7 @@ Next.js 15 App Router · React 19 · TypeScript strict · plain CSS (`src/app/gl
 
 ## Data
 - `src/data/products.ts` — 33 products curated from TG posts 2024–2026: name, category, **regular price** (UAH, from «звичайна ціна»), sizes (`sizesConfirmed:false` = not stated in posts), colours → photo ids (TG message id → `public/images/p/<id>.webp`, 3:4), lead + details (facts only from captions), isNew (AW 26/27 Black Friday posts), bestseller, `source` post id.
-- `src/lib/catalog.ts` — categories (+cover photo), colour families, `query()`, `toCard()`. `edImg()` = editorial 1440×1920 frames in `public/images/ed/`.
+- `src/lib/catalog.ts` — category tree from the client (2026-11-22): Верхній одяг → `puffers` (пуховики/куртки) + `vests` (жилетки/бомбери); Спортивні костюми (`suits`) → `suits-demi` + `suits-winter`; `shirts`, `tees`, `longs`, `knit`, `pants`. Group ids (`outerwear`, `suits`) show all children; `Product.also` puts sets into extra categories. `dresses` is hidden (not in the client's menu) — only in «Весь каталог». Colour families, `query()`, `toCard()`. `edImg()` = editorial 1440×1920 frames in `public/images/ed/`.
 - `src/lib/info.ts` — info pages (how-to-order, delivery, returns, sizes, contacts). `src/lib/site.ts` — brand links.
 
 ## Routes

@@ -21,3 +21,4 @@
 6. Delivery cost policy (free from some amount?), prepayment rules.
 7. Original studio photos if they have them (TG originals are already 1920×2560 — good).
 8. Telegram bot token + chat id for orders.
+9. Category menu (2026-11-22, client's list): dresses & skirts (5 models) are not in it — hidden category, visible only in «Весь каталог». Keep, move or remove? «Лонги/кофти» (1 model) and «Штани/шорти/лосини» (2 sets) are thin — the channel has cargo / palazzo / linen / eco-leather pants, joggers, rib leggings, rib tops, stripe longsleeve (2023–24 posts, mostly sold out) — add them if still sold.

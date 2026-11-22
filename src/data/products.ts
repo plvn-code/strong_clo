@@ -5,7 +5,9 @@
  * Sizes marked `sizesConfirmed: false` were not stated in the posts — see docs/STATUS.md.
  */
 
-export type CategoryId = "puffers" | "vests" | "jackets" | "suits" | "shirts" | "knit" | "dresses" | "summer";
+/** Leaf categories (menu: Верхній одяг → puffers/vests, Спортивні костюми → suits-demi/suits-winter).
+ *  `dresses` is not in the client's menu — those models stay reachable via «Весь каталог». */
+export type CategoryId = "puffers" | "vests" | "suits-demi" | "suits-winter" | "shirts" | "tees" | "longs" | "knit" | "pants" | "dresses";
 
 export interface Colour {
   name: string;
@@ -17,6 +19,8 @@ export interface Product {
   slug: string;
   name: string;
   category: CategoryId;
+  /** extra categories the model also shows up in (sets: shirt + top + shorts …) */
+  also?: CategoryId[];
   /** regular price, UAH */
   price: number;
   sizes: string[];
@@ -58,7 +62,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "kostyum-over-na-flisi",
     name: "Костюм OVER на флісі",
-    category: "suits",
+    category: "suits-winter",
     price: 3150,
     sizes: TWO,
     sizesConfirmed: true,
@@ -74,7 +78,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "kostyum-teddy",
     name: "Костюм Teddy",
-    category: "suits",
+    category: "suits-winter",
     price: 2950,
     sizes: TWO,
     sizesConfirmed: true,
@@ -242,7 +246,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "bomber-eko-shkira",
     name: "Бомбер з еко-шкіри",
-    category: "jackets",
+    category: "vests",
     price: 2250,
     sizes: ONE,
     sizesConfirmed: true,
@@ -258,7 +262,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "bomber-bukle",
     name: "Бомбер букле",
-    category: "jackets",
+    category: "vests",
     price: 1999,
     sizes: ONE,
     sizesConfirmed: true,
@@ -270,7 +274,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "bomber-zamshevyi",
     name: "Замшевий бомбер",
-    category: "jackets",
+    category: "vests",
     price: 2050,
     sizes: ONE,
     sizesConfirmed: false,
@@ -282,7 +286,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "kurtka-demisezonna",
     name: "Демісезонна куртка з утепленням",
-    category: "jackets",
+    category: "puffers",
     price: 1950,
     sizes: ONE,
     sizesConfirmed: false,
@@ -297,7 +301,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "pidzhak-z-cholovichoho-plecha",
     name: "Піджак з чоловічого плеча",
-    category: "jackets",
+    category: "puffers",
     price: 2690,
     sizes: ONE,
     sizesConfirmed: false,
@@ -315,7 +319,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "zip-kostyum-na-flisi",
     name: "ZIP-костюм на флісі",
-    category: "suits",
+    category: "suits-winter",
     price: 2950,
     sizes: TWO,
     sizesConfirmed: true,
@@ -337,7 +341,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "kostyum-z-mikroflisu",
     name: "Костюм з мікрофлісу",
-    category: "suits",
+    category: "suits-winter",
     price: 2330,
     sizes: TWO,
     sizesConfirmed: true,
@@ -352,7 +356,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "kostyum-velurovyi",
     name: "Велюровий костюм",
-    category: "suits",
+    category: "suits-demi",
     price: 1850,
     sizes: TWO,
     sizesConfirmed: false,
@@ -369,7 +373,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "zip-kostyum-bez-uteplennia",
     name: "ZIP-костюм без утеплення",
-    category: "suits",
+    category: "suits-demi",
     price: 2250,
     sizes: TWO,
     sizesConfirmed: false,
@@ -387,7 +391,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "kostyum-na-flisi-dzhohery",
     name: "Утеплений костюм на флісі",
-    category: "suits",
+    category: "suits-winter",
     price: 2150,
     sizes: TWO,
     sizesConfirmed: true,
@@ -406,7 +410,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "kostyum-na-flisi-pryami",
     name: "Костюм на флісі з прямими штанами",
-    category: "suits",
+    category: "suits-winter",
     price: 2090,
     sizes: TWO,
     sizesConfirmed: true,
@@ -421,7 +425,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "sportyvnyi-kostyum",
     name: "Спортивний костюм без утеплення",
-    category: "suits",
+    category: "suits-demi",
     price: 2550,
     sizes: TWO,
     sizesConfirmed: true,
@@ -448,7 +452,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "bodi-z-dovhym-zamkom",
     name: "Боді з довгим замком",
-    category: "knit",
+    category: "longs",
     price: 1299,
     sizes: TWO,
     sizesConfirmed: false,
@@ -530,7 +534,7 @@ export const PRODUCTS: Product[] = [
   {
     slug: "futbolka-oversize",
     name: "Футболка oversize",
-    category: "summer",
+    category: "tees",
     price: 760,
     sizes: ONE,
     sizesConfirmed: false,
@@ -542,7 +546,8 @@ export const PRODUCTS: Product[] = [
   {
     slug: "lianyi-komplekt-triika",
     name: "Лляний комплект «Трійка»",
-    category: "summer",
+    category: "shirts",
+    also: ["tees", "pants"],
     price: 1599,
     sizes: TWO,
     sizesConfirmed: false,
@@ -558,7 +563,8 @@ export const PRODUCTS: Product[] = [
   {
     slug: "kostyum-zhatka",
     name: "Костюм «Жатка»",
-    category: "summer",
+    category: "pants",
+    also: ["shirts"],
     price: 1650,
     sizes: TWO,
     sizesConfirmed: false,

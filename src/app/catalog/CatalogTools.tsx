@@ -20,6 +20,15 @@ export function CatalogTools({ q }: { q: Query }) {
     document.querySelector("[data-grid]")?.setAttribute("data-cols", String(cols));
   }, [cols]);
 
+  // keep the active category chip visible on phones (the chip row scrolls sideways)
+  useEffect(() => {
+    for (const sel of [".chips .is-on", ".subchips .is-on"]) {
+      const el = document.querySelector<HTMLElement>(sel);
+      const row = el?.parentElement;
+      if (el && row) row.scrollLeft = el.offsetLeft - row.offsetLeft - (row.clientWidth - el.offsetWidth) / 2;
+    }
+  }, [q.c]);
+
   useEffect(() => {
     document.documentElement.classList.toggle("is-locked", open);
     return () => document.documentElement.classList.remove("is-locked");

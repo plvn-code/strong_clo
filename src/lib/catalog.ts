@@ -4,24 +4,64 @@ export type { Product, CategoryId };
 export { PRODUCTS };
 
 export interface Category {
-  id: CategoryId;
+  id: string;
+  /** short label (menu, chips, tiles) */
   name: string;
-  /** cover photo for tiles/menu (product photo id) */
+  /** full title for the catalogue heading / breadcrumbs, when the short label needs context */
+  title?: string;
+  /** cover photo for tiles (product photo id) */
   cover: number;
+  children?: Category[];
 }
 
+/** Client's menu structure (2026-11-22). Top level = what the menu, tiles and chips show. */
 export const CATEGORIES: Category[] = [
-  { id: "puffers", name: "Пуховики", cover: 4011 },
-  { id: "suits", name: "Костюми", cover: 4002 },
-  { id: "vests", name: "Жилети", cover: 422 },
-  { id: "jackets", name: "Бомбери та куртки", cover: 374 },
+  {
+    id: "outerwear",
+    name: "Верхній одяг",
+    cover: 4011,
+    children: [
+      { id: "puffers", name: "Пуховики / куртки", title: "Пуховики та куртки", cover: 4013 },
+      { id: "vests", name: "Жилетки / бомбери", title: "Жилетки та бомбери", cover: 422 },
+    ],
+  },
+  {
+    id: "suits",
+    name: "Спортивні костюми",
+    cover: 4002,
+    children: [
+      { id: "suits-demi", name: "Осінь / весна", title: "Костюми осінь / весна", cover: 453 },
+      { id: "suits-winter", name: "Зимові", title: "Зимові костюми", cover: 4024 },
+    ],
+  },
   { id: "shirts", name: "Сорочки", cover: 4014 },
-  { id: "knit", name: "Трикотаж", cover: 4007 },
-  { id: "dresses", name: "Сукні та спідниці", cover: 447 },
-  { id: "summer", name: "Літо та база", cover: 305 },
+  { id: "tees", name: "Футболки / топи", cover: 305 },
+  { id: "longs", name: "Лонги / кофти", cover: 424 },
+  { id: "knit", name: "Вʼязані вироби", cover: 4007 },
+  { id: "pants", name: "Штани / шорти / лосини", cover: 252 },
 ];
 
-export const categoryName = (id: string) => CATEGORIES.find((c) => c.id === id)?.name ?? "";
+/** Not in the client's menu, but products keep a valid category page. */
+const HIDDEN: Category[] = [{ id: "dresses", name: "Сукні та спідниці", cover: 447 }];
+
+const ALL: Category[] = [...CATEGORIES.flatMap((c) => [c, ...(c.children ?? [])]), ...HIDDEN];
+
+export const findCategory = (id: string) => ALL.find((c) => c.id === id) ?? null;
+export const parentOf = (id: string) => CATEGORIES.find((c) => c.children?.some((k) => k.id === id)) ?? null;
+export const categoryName = (id: string) => {
+  const c = findCategory(id);
+  return c ? (c.title ?? c.name) : "";
+};
+
+/** the category itself + its children */
+const idsOf = (id: string) => {
+  const c = findCategory(id);
+  return c ? [c.id, ...(c.children ?? []).map((k) => k.id)] : [];
+};
+export const inCategory = (p: Product, id: string) => {
+  const ids = idsOf(id);
+  return ids.includes(p.category) || !!p.also?.some((a) => ids.includes(a));
+};
 
 export const img = (id: number) => `/images/p/${id}.webp`;
 export const edImg = (id: number) => `/images/ed/${id}.webp`;
@@ -67,7 +107,7 @@ export function query(q: Query) {
   let list = [...PRODUCTS];
   if (q.c === "new") list = list.filter((p) => p.isNew);
   else if (q.c === "bestsellers") list = list.filter((p) => p.bestseller);
-  else if (q.c) list = list.filter((p) => p.category === q.c);
+  else if (q.c) list = list.filter((p) => inCategory(p, q.c!));
   const fam = COLOUR_FAMILIES.find((f) => f.id === q.color);
   if (fam) list = list.filter((p) => p.colours.some((c) => fam.match.test(c.name)));
   if (q.size) list = list.filter((p) => p.sizes.includes(q.size!));
@@ -77,6 +117,7 @@ export function query(q: Query) {
       (p) =>
         p.name.toLowerCase().includes(s) ||
         categoryName(p.category).toLowerCase().includes(s) ||
+        (parentOf(p.category)?.name.toLowerCase().includes(s) ?? false) ||
         p.colours.some((c) => c.name.toLowerCase().includes(s)),
     );
   }

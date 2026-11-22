@@ -68,9 +68,9 @@ export default function Home() {
           </div>
         </div>
         <div className="cats">
-          {CATEGORIES.map((c, i) => (
-            <Link key={c.id} href={`/catalog?c=${c.id}`} className={`cat${i < 2 ? " is-big" : ""}`} data-reveal>
-              <Image src={img(c.cover)} alt={c.name} fill sizes={i < 2 ? "(max-width: 760px) 100vw, 50vw" : "(max-width: 760px) 50vw, 25vw"} className="cat-img" />
+          {[...CATEGORIES, { id: "new", name: "Новинки", cover: 4022 }].map((c) => (
+            <Link key={c.id} href={`/catalog?c=${c.id}`} className="cat" data-reveal>
+              <Image src={img(c.cover)} alt={c.name} fill sizes="(max-width: 760px) 50vw, 25vw" className="cat-img" />
               <span className="cat-name">
                 {c.name}
                 <IconArrow />

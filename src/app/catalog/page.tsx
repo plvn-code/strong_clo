@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CatalogTools } from "./CatalogTools";
 import { ProductCard } from "@/components/ProductCard";
-import { CATEGORIES, PRODUCTS, categoryName, query, toCard, type Query } from "@/lib/catalog";
+import { CATEGORIES, PRODUCTS, categoryName, findCategory, parentOf, query, toCard, type Query } from "@/lib/catalog";
 import { plural } from "@/lib/format";
 
 type SP = Promise<Record<string, string | string[] | undefined>>;
@@ -26,6 +26,9 @@ export default async function CatalogPage({ searchParams }: { searchParams: SP }
   const q: Query = { c: one(sp.c), color: one(sp.color), size: one(sp.size), sort: one(sp.sort), q: one(sp.q)?.slice(0, 60) };
   const list = query(q);
   const chips = [{ id: "", name: "Усе" }, { id: "new", name: "Новинки" }, ...CATEGORIES, { id: "bestsellers", name: "Бестселери" }];
+  // second row of chips inside «Верхній одяг» / «Спортивні костюми»
+  const group = q.c ? (findCategory(q.c)?.children ? findCategory(q.c) : parentOf(q.c)) : null;
+  const topOn = (id: string) => (q.c ?? "") === id || group?.id === id;
   const href = (c: string) => {
     const p = new URLSearchParams();
     if (c) p.set("c", c);
@@ -46,7 +49,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: SP }
       <div className="cat-bar">
         <nav className="chips wrap" aria-label="Категорії">
           {chips.map((c) => {
-            const on = (q.c ?? "") === c.id;
+            const on = topOn(c.id);
             const n = c.id === "" ? PRODUCTS.length : undefined;
             return (
               <Link key={c.id || "all"} href={href(c.id)} className={`chip${on ? " is-on" : ""}`} aria-current={on ? "page" : undefined}>
@@ -56,6 +59,18 @@ export default async function CatalogPage({ searchParams }: { searchParams: SP }
             );
           })}
         </nav>
+        {group?.children && (
+          <nav className="subchips wrap" aria-label={group.name}>
+            {[{ id: group.id, name: "Усе" }, ...group.children].map((c) => {
+              const on = q.c === c.id;
+              return (
+                <Link key={c.id} href={href(c.id)} className={`subchip${on ? " is-on" : ""}`} aria-current={on ? "page" : undefined}>
+                  {c.name}
+                </Link>
+              );
+            })}
+          </nav>
+        )}
         <CatalogTools q={q} />
       </div>
 

@@ -34,7 +34,7 @@ export function Footer() {
           <nav className="ftr-col" aria-label="Каталог">
             <p className="eyebrow">Каталог</p>
             <Link href="/catalog?c=new">Новинки</Link>
-            {CATEGORIES.slice(0, 6).map((c) => (
+            {CATEGORIES.map((c) => (
               <Link key={c.id} href={`/catalog?c=${c.id}`}>
                 {c.name}
               </Link>

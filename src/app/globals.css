@@ -576,12 +576,34 @@ svg {
   flex: none;
 }
 @media (hover: hover) {
-  .menu-links:hover .menu-link {
+  .menu-links:hover .menu-link,
+  .menu-links:hover .menu-kid {
     opacity: 0.45;
   }
-  .menu-links .menu-link:hover {
+  .menu-links .menu-link:hover,
+  .menu-links .menu-kid:hover {
     opacity: 1;
   }
+}
+.menu-kids {
+  display: flex;
+  flex-direction: column;
+  margin: -6px 0 8px;
+  padding-left: 14px;
+  border-left: 1px solid var(--line);
+}
+.menu-kid {
+  display: flex;
+  align-items: center;
+  min-height: 38px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mute);
+  transition: color 0.25s, opacity 0.25s;
+}
+.menu-kid:hover {
+  color: var(--ink);
 }
 .menu-sub {
   display: flex;
@@ -1947,6 +1969,34 @@ svg {
   color: var(--paper);
   border-color: var(--ink);
 }
+.subchips {
+  display: flex;
+  gap: 22px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 12px;
+}
+.subchips::-webkit-scrollbar {
+  display: none;
+}
+.subchip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  border-bottom: 1px solid transparent;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.subchip:hover,
+.subchip.is-on {
+  color: var(--ink);
+}
+.subchip.is-on {
+  border-bottom-color: var(--ink);
+}
 .tools {
   display: flex;
   justify-content: space-between;
@@ -2010,10 +2060,19 @@ svg {
   }
   .cat-bar {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
   }
+  .subchips {
+    order: 3;
+    flex: 0 0 100%;
+    max-width: none;
+    margin: 0;
+    padding-top: 2px;
+  }
   .chips {
-    flex: 1;
+    flex: 1 1 0;
+    min-width: 0;
     padding-top: 12px;
     padding-bottom: 12px;
     max-width: none;

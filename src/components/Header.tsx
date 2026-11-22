@@ -138,10 +138,21 @@ export function Header() {
               <IconChevron />
             </Link>
             {CATEGORIES.map((c) => (
-              <Link key={c.id} href={`/catalog?c=${c.id}`} className="menu-link">
-                {c.name}
-                <IconChevron />
-              </Link>
+              <div key={c.id} className="menu-group">
+                <Link href={`/catalog?c=${c.id}`} className="menu-link">
+                  {c.name}
+                  <IconChevron />
+                </Link>
+                {c.children && (
+                  <div className="menu-kids">
+                    {c.children.map((k) => (
+                      <Link key={k.id} href={`/catalog?c=${k.id}`} className="menu-kid">
+                        {k.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
             <Link href="/catalog?c=bestsellers" className="menu-link">
               Бестселери
