@@ -54,7 +54,7 @@ interface StoreValue {
   setLastOrder: (o: PlacedOrder) => void;
 }
 
-const K = { bag: "strong.bag.v2", wish: "strong.wish.v1", contact: "strong.contact.v1", last: "strong.last.v1" };
+const K = { bag: "strong.bag.v1", wish: "strong.wish.v1", contact: "strong.contact.v1", last: "strong.last.v1" };
 
 function read<T>(key: string, fallback: T): T {
   try {
