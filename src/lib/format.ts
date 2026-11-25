@@ -1,4 +1,7 @@
-export function formatPrice(value: number) {
+export const PRICE_ON_REQUEST = "Ціна за запитом";
+
+export function formatPrice(value: number | null) {
+  if (value === null) return PRICE_ON_REQUEST;
   return `${new Intl.NumberFormat("uk-UA").format(value).replace(/\s/g, " ")} ₴`;
 }
 

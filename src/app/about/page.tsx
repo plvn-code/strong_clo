@@ -13,7 +13,7 @@ export default function AboutPage() {
   return (
     <div className="about">
       <section className="about-hero">
-        <Image src={edImg(391)} alt="STRONG — ZIP-костюм на флісі" fill priority sizes="100vw" quality={85} className="story-img" />
+        <Image src={edImg(3643)} alt="STRONG — пуховики сезону Fall Winter 26/27" fill priority sizes="100vw" quality={85} className="story-img" />
         <div className="about-hero-copy">
           <Monogram className="about-mono" />
           <p className="eyebrow">Про бренд</p>
@@ -60,10 +60,10 @@ export default function AboutPage() {
 
       <section className="about-pair">
         <div className="about-pair-img" data-reveal>
-          <Image src={edImg(4004)} alt="Костюм Teddy у молочному кольорі" fill sizes="(max-width: 760px) 100vw, 50vw" className="story-img" />
+          <Image src={edImg(3495)} alt="Костюм Teddy у молочному кольорі" fill sizes="(max-width: 760px) 100vw, 50vw" className="story-img" />
         </div>
         <div className="about-pair-img" data-reveal>
-          <Image src={edImg(360)} alt="Пуховик STRONG у шоколадному кольорі" fill sizes="(max-width: 760px) 100vw, 50vw" className="story-img" />
+          <Image src={edImg(3379)} alt="Пуховик oversize у шоколадному кольорі" fill sizes="(max-width: 760px) 100vw, 50vw" className="story-img" />
         </div>
       </section>
 

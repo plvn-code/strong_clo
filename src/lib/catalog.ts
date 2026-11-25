@@ -14,37 +14,36 @@ export interface Category {
   children?: Category[];
 }
 
-/** Client's menu structure (2026-11-22). Top level = what the menu, tiles and chips show. */
+/** Client's menu structure (2026-11-22, «Термоодяг» + «Жилетки / піджаки» from the manager 2026-11-25).
+ *  Top level = what the menu, tiles and chips show. */
 export const CATEGORIES: Category[] = [
   {
     id: "outerwear",
     name: "Верхній одяг",
-    cover: 4011,
+    cover: 3326,
     children: [
-      { id: "puffers", name: "Пуховики / куртки", title: "Пуховики та куртки", cover: 4013 },
-      { id: "vests", name: "Жилетки / бомбери", title: "Жилетки та бомбери", cover: 422 },
+      { id: "puffers", name: "Пуховики / куртки", title: "Пуховики та куртки", cover: 3372 },
+      { id: "vests", name: "Жилетки / піджаки", title: "Жилетки та піджаки", cover: 3459 },
     ],
   },
   {
     id: "suits",
     name: "Спортивні костюми",
-    cover: 4002,
+    cover: 3313,
     children: [
-      { id: "suits-demi", name: "Осінь / весна", title: "Костюми осінь / весна", cover: 453 },
-      { id: "suits-winter", name: "Зимові", title: "Зимові костюми", cover: 4024 },
+      { id: "suits-demi", name: "Осінь / весна", title: "Костюми осінь / весна", cover: 3481 },
+      { id: "suits-winter", name: "Зимові", title: "Зимові костюми", cover: 3298 },
     ],
   },
-  { id: "shirts", name: "Сорочки", cover: 4014 },
-  { id: "tees", name: "Футболки / топи", cover: 305 },
-  { id: "longs", name: "Лонги / кофти", cover: 424 },
-  { id: "knit", name: "Вʼязані вироби", cover: 4007 },
-  { id: "pants", name: "Штани / шорти / лосини", cover: 252 },
+  { id: "shirts", name: "Сорочки", cover: 3517 },
+  { id: "tees", name: "Футболки / топи", cover: 3357 },
+  { id: "longs", name: "Лонги / кофти", cover: 3563 },
+  { id: "knit", name: "Вʼязані вироби", cover: 3572 },
+  { id: "thermo", name: "Термоодяг", cover: 3349 },
+  { id: "pants", name: "Штани / шорти / лосини", cover: 3613 },
 ];
 
-/** Not in the client's menu, but products keep a valid category page. */
-const HIDDEN: Category[] = [{ id: "dresses", name: "Сукні та спідниці", cover: 447 }];
-
-const ALL: Category[] = [...CATEGORIES.flatMap((c) => [c, ...(c.children ?? [])]), ...HIDDEN];
+const ALL: Category[] = CATEGORIES.flatMap((c) => [c, ...(c.children ?? [])]);
 
 export const findCategory = (id: string) => ALL.find((c) => c.id === id) ?? null;
 export const parentOf = (id: string) => CATEGORIES.find((c) => c.children?.some((k) => k.id === id)) ?? null;
@@ -121,8 +120,9 @@ export function query(q: Query) {
         p.colours.some((c) => c.name.toLowerCase().includes(s)),
     );
   }
-  if (q.sort === "price-asc") list.sort((a, b) => a.price - b.price);
-  else if (q.sort === "price-desc") list.sort((a, b) => b.price - a.price);
+  // «ціна за запитом» goes last either way
+  if (q.sort === "price-asc") list.sort((a, b) => (a.price ?? Infinity) - (b.price ?? Infinity));
+  else if (q.sort === "price-desc") list.sort((a, b) => (b.price ?? -1) - (a.price ?? -1));
   else if (q.sort === "new") list.sort((a, b) => Number(!!b.isNew) - Number(!!a.isNew));
   return list;
 }
@@ -131,7 +131,8 @@ export function query(q: Query) {
 export interface Card {
   slug: string;
   name: string;
-  price: number;
+  price: number | null;
+  oldPrice: number | null;
   photos: [number, number | null];
   colours: { name: string; hex: string; photo: number }[];
   badge: string | null;
@@ -143,6 +144,7 @@ export function toCard(p: Product, colour?: string): Card {
     slug: p.slug,
     name: p.name,
     price: p.price,
+    oldPrice: p.oldPrice ?? null,
     photos: [c.photos[0], c.photos[1] ?? p.colours[1]?.photos[0] ?? null],
     colours: p.colours.map((x) => ({ name: x.name, hex: x.hex, photo: x.photos[0] })),
     badge: p.isNew ? "New" : p.bestseller ? "Bestseller" : null,

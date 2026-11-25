@@ -16,7 +16,7 @@ export function CartView() {
       {ready && bag.length === 0 ? (
         <div className="empty">
           <p className="display-s">Тут поки порожньо</p>
-          <p className="muted">Зазирніть у новинки — пуховики й костюми сезону AW 26/27.</p>
+          <p className="muted">Зазирніть у новинки — пуховики й костюми сезону FW 26/27.</p>
           <Link href="/catalog?c=new" className="btn btn-dark">
             Новинки
           </Link>

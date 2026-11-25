@@ -6,12 +6,16 @@ import { useEffect, useState } from "react";
 import { edImg } from "@/lib/catalog";
 import { Wordmark } from "./Wordmark";
 
-/** Each slide is a triptych on desktop; phones show only the first frame. */
+/** The manager's three campaign shots (2026-11-25). Phones: one shot per slide.
+ *  Desktop: every slide shows all three side by side in the same order (CSS `order`),
+ *  so the triptych stays put while the caption changes. */
+const PHOTOS = [3641, 3642, 3643];
 const SLIDES = [
-  { label: "Пуховики", frames: [4011, 4012, 4013], href: "/catalog?c=puffers" },
-  { label: "ZIP-костюм на флісі", frames: [352, 678, 392], href: "/product/zip-kostyum-na-flisi" },
-  { label: "Костюми AW 26/27", frames: [4024, 4001, 4004], href: "/catalog?c=suits" },
+  { label: "Лаковий пуховик", href: "/product/puhovyk-lakovyi?colour=%D0%A7%D0%BE%D1%80%D0%BD%D0%B8%D0%B9" },
+  { label: "Светр з високою горловиною", href: "/product/svetr-z-vysokoiu-horlovynoiu?colour=%D0%A8%D0%BE%D0%BA%D0%BE%D0%BB%D0%B0%D0%B4%D0%BD%D0%B8%D0%B9" },
+  { label: "Fall Winter 26/27", href: "/catalog?c=new" },
 ];
+const framesOf = (k: number) => [...PHOTOS.slice(k), ...PHOTOS.slice(0, k)];
 const MS = 6000;
 
 export function HeroSlides() {
@@ -31,13 +35,13 @@ export function HeroSlides() {
       <div className="hero-stage">
         {SLIDES.map((s, k) => (
           <div key={s.label} className={`hero-slide${k === i ? " is-on" : ""}`} aria-hidden={k !== i}>
-            {s.frames.map((f, n) => (
-              <div key={f} className="hero-frame">
+            {framesOf(k).map((f, n) => (
+              <div key={f} className="hero-frame" style={{ order: PHOTOS.indexOf(f) }}>
                 <Image
                   src={edImg(f)}
                   alt={n === 0 ? `STRONG — ${s.label}` : ""}
                   fill
-                  priority={k === 0 && n === 0}
+                  priority={k === 0}
                   sizes={n === 0 ? "(max-width: 760px) 100vw, 34vw" : "34vw"}
                   quality={85}
                   className="hero-img"
@@ -50,7 +54,7 @@ export function HeroSlides() {
       </div>
 
       <div className="hero-top">
-        <span>AW 26/27</span>
+        <span>FW 26/27</span>
         <span className="hero-top-mid">Український бренд одягу</span>
         <span>Since 2021</span>
       </div>

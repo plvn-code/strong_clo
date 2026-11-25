@@ -6,20 +6,20 @@ import { ProductCard } from "@/components/ProductCard";
 import { IconArrow, IconInstagram, IconTelegram } from "@/components/Icons";
 import { Monogram } from "@/components/Monogram";
 import { CATEGORIES, PRODUCTS, bestsellers, edImg, getProduct, img, newIn, toCard } from "@/lib/catalog";
-import { formatPrice } from "@/lib/format";
+import { formatPrice, plural } from "@/lib/format";
 import { site } from "@/lib/site";
 
 const PUFFERS = [
-  { ed: 4010, slug: "puhovyk-oversize", colour: "Чорний" },
-  { ed: 4012, slug: "puhovyk-oversize", colour: "Молочний" },
-  { ed: 4013, slug: "puhovyk-oversize", colour: "Мокко" },
-  { ed: 382, slug: "puhovyk-strong", colour: "Шоколадний" },
+  { ed: 3376, slug: "puhovyk-oversize", colour: "Графіт" },
+  { ed: 3386, slug: "puhovyk-na-zapakh", colour: "Чорний" },
+  { ed: 3396, slug: "puhovyk-barkhatnyi", colour: "Electric blue" },
+  { ed: 3411, slug: "puhovyk-transformer", colour: "Айворі" },
 ];
 
-const INSTA = [4007, 455, 4015, 463, 360, 394];
+const INSTA = [3416, 3459, 3548, 3572, 3497, 3329];
 
 export default function Home() {
-  const fleece = getProduct("zip-kostyum-na-flisi")!;
+  const polar = getProduct("kostyum-polar-z-kapiushonom")!;
   const fresh = newIn().map((p) => toCard(p));
   const best = bestsellers().slice(0, 4).map((p) => toCard(p));
   const more = PRODUCTS.filter((p) => !p.isNew && !p.bestseller)
@@ -34,7 +34,7 @@ export default function Home() {
       <section className="manifesto wrap" data-reveal>
         <p className="eyebrow">STRONG · Est. 2021</p>
         <p className="manifesto-text">
-          Ми шиємо речі, в яких <em>тепло</em>, <em>зручно</em> і впевнено — від пуховика до −30 °C до костюма, який хочеться носити щодня.
+          Ми шиємо речі, в яких <em>тепло</em>, <em>зручно</em> і впевнено — від пуховика на еко-пуху до костюма, який хочеться носити щодня.
         </p>
         <Link href="/about" className="link-arrow">
           Про бренд <IconArrow />
@@ -47,7 +47,7 @@ export default function Home() {
           <div>
             <p className="eyebrow">01 — Новий сезон</p>
             <h2 id="new-h" className="display">
-              Новинки AW 26/27
+              Новинки FW 26/27
             </h2>
           </div>
           <Link href="/catalog?c=new" className="link-arrow">
@@ -68,7 +68,7 @@ export default function Home() {
           </div>
         </div>
         <div className="cats">
-          {[...CATEGORIES, { id: "new", name: "Новинки", cover: 4022 }].map((c) => (
+          {CATEGORIES.map((c) => (
             <Link key={c.id} href={`/catalog?c=${c.id}`} className="cat" data-reveal>
               <Image src={img(c.cover)} alt={c.name} fill sizes="(max-width: 760px) 50vw, 25vw" className="cat-img" />
               <span className="cat-name">
@@ -80,30 +80,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── editorial: the fleece suit ── */}
+      {/* ── editorial: the polar fleece suit ── */}
       <section className="story" aria-labelledby="story-h">
         <div className="story-media" data-reveal>
-          <Image src={edImg(678)} alt="ZIP-костюм на флісі в бордовому кольорі" fill sizes="(max-width: 960px) 100vw, 55vw" quality={85} className="story-img" />
+          <Image src={edImg(3311)} alt="Костюм з флісу полар з капюшоном у шоколадному кольорі" fill sizes="(max-width: 960px) 100vw, 55vw" quality={85} className="story-img" />
         </div>
         <div className="story-copy" data-reveal>
-          <p className="eyebrow">03 — The Alpine Edit</p>
+          <p className="eyebrow">03 — The Polar Edit</p>
           <h2 id="story-h" className="display display-xl">
-            Бордовий,
+            Шоколад,
             <br />
             що гріє
           </h2>
-          <p className="story-text">{fleece.lead}</p>
+          <p className="story-text">{polar.lead}</p>
           <ul className="story-list">
-            {fleece.details.map((d) => (
+            {polar.details.map((d) => (
               <li key={d}>{d}</li>
             ))}
           </ul>
           <div className="story-inset">
-            <Image src={edImg(676)} alt="" fill sizes="200px" className="story-img" />
+            <Image src={edImg(3314)} alt="" fill sizes="200px" className="story-img" />
           </div>
           <div className="story-buy">
-            <span>{formatPrice(fleece.price)}</span>
-            <Link href={`/product/${fleece.slug}`} className="btn btn-light">
+            <span>{formatPrice(polar.price)}</span>
+            <Link href={`/product/${polar.slug}`} className="btn btn-light">
               Обрати колір
             </Link>
           </div>
@@ -139,7 +139,7 @@ export default function Home() {
               Пуховики STRONG
             </h2>
           </div>
-          <p className="look-note">Еко-пух, вологостійка плащівка, оверсайз-крій. Температурний режим до −30 °C.</p>
+          <p className="look-note">Еко-пух, вологостійка тканина, металева фурнітура, капюшон на кнопках. Лакові, бархатні, трансформери 2в1.</p>
         </div>
         <div className="look-track">
           {PUFFERS.map((f) => {
@@ -165,7 +165,7 @@ export default function Home() {
       {/* ── details ── */}
       <section className="detail wrap" aria-labelledby="detail-h">
         <div className="detail-media" data-reveal>
-          <Image src={edImg(1300)} alt="Вишита монограма STRONG на костюмі з мікрофлісу" fill sizes="(max-width: 960px) 100vw, 45vw" className="story-img" />
+          <Image src={edImg(3310)} alt="Фірмова вишивка STRONG на костюмі з флісу полар" fill sizes="(max-width: 960px) 100vw, 45vw" className="story-img" />
         </div>
         <div className="detail-copy" data-reveal>
           <Monogram className="detail-mono" />
@@ -189,12 +189,12 @@ export default function Home() {
               <dd>у нашому Instagram</dd>
             </div>
             <div>
-              <dt>−30 °C</dt>
-              <dd>найтепліший пуховик</dd>
+              <dt>{PRODUCTS.length}</dt>
+              <dd>{plural(PRODUCTS.length, "модель", "моделі", "моделей")} у каталозі</dd>
             </div>
             <div>
-              <dt>90%+</dt>
-              <dd>бавовни у костюмах</dd>
+              <dt>Еко-пух</dt>
+              <dd>у пуховиках і жилетах</dd>
             </div>
           </dl>
         </div>
@@ -206,7 +206,7 @@ export default function Home() {
           <div>
             <p className="eyebrow">07 — Каталог</p>
             <h2 id="more-h" className="display">
-              Жилети, бомбери, трикотаж
+              Жилети, костюми, база
             </h2>
           </div>
           <Link href="/catalog" className="link-arrow">

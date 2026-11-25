@@ -990,9 +990,23 @@ svg {
   flex-wrap: wrap;
 }
 .card-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0 7px;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
+}
+/* «замість …» price */
+.card-price s,
+.pdp-price s {
+  order: 2;
+  font-weight: 400;
+  color: var(--mute);
+}
+.card-price s {
+  font-size: 11.5px;
 }
 .card-swatches {
   display: flex;
@@ -2186,6 +2200,9 @@ svg {
   text-transform: uppercase;
 }
 .pdp-price {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
   margin-top: 12px;
   font-size: 20px;
   font-weight: 600;

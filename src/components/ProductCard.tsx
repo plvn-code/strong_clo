@@ -31,7 +31,10 @@ export function ProductCard({ card, priority = false, sizes = "(max-width: 760px
           {card.name}
         </Link>
         <div className="card-meta">
-          <span className="card-price">{formatPrice(card.price)}</span>
+          <span className="card-price">
+            {card.oldPrice && <s>{formatPrice(card.oldPrice)}</s>}
+            <span className={card.oldPrice ? "is-sale" : undefined}>{formatPrice(card.price)}</span>
+          </span>
           {card.colours.length > 1 && (
             <span className="card-swatches" role="group" aria-label="Кольори">
               {card.colours.slice(0, 5).map((c, i) => (

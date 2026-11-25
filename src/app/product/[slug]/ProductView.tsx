@@ -60,7 +60,9 @@ export function ProductView({ product: p, category, initialColour }: { product: 
     setSlide(Math.round(el.scrollLeft / el.clientWidth));
   };
 
+  const onRequest = p.price === null;
   const buy = () => {
+    if (p.price === null) return;
     if (!size) {
       setWarn(true);
       document.getElementById("sizes")?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -100,9 +102,12 @@ export function ProductView({ product: p, category, initialColour }: { product: 
             <span>/</span>
             <Link href={`/catalog?c=${p.category}`}>{category}</Link>
           </nav>
-          {(p.isNew || p.bestseller) && <p className="pdp-badge">{p.isNew ? "New · AW 26/27" : "Bestseller"}</p>}
+          {(p.isNew || p.bestseller) && <p className="pdp-badge">{p.isNew ? "New · FW 26/27" : "Bestseller"}</p>}
           <h1 className="pdp-name">{p.name}</h1>
-          <p className="pdp-price">{formatPrice(p.price)}</p>
+          <p className="pdp-price">
+            {p.oldPrice && <s>{formatPrice(p.oldPrice)}</s>}
+            <span className={p.oldPrice ? "is-sale" : undefined}>{formatPrice(p.price)}</span>
+          </p>
           <p className="pdp-lead">{p.lead}</p>
 
           <div className="pdp-opt">
@@ -135,15 +140,21 @@ export function ProductView({ product: p, category, initialColour }: { product: 
           </div>
 
           <div className="pdp-buy" ref={buyRef}>
-            <button className={`btn btn-dark btn-block${added ? " is-done" : ""}`} onClick={buy}>
-              {added ? (
-                <>
-                  <IconCheck /> Додано в кошик
-                </>
-              ) : (
-                <>Додати в кошик — {formatPrice(p.price)}</>
-              )}
-            </button>
+            {onRequest ? (
+              <a className="btn btn-dark btn-block" href={site.managerUrl} target="_blank" rel="noopener noreferrer">
+                <IconTelegram /> Дізнатися ціну
+              </a>
+            ) : (
+              <button className={`btn btn-dark btn-block${added ? " is-done" : ""}`} onClick={buy}>
+                {added ? (
+                  <>
+                    <IconCheck /> Додано в кошик
+                  </>
+                ) : (
+                  <>Додати в кошик — {formatPrice(p.price)}</>
+                )}
+              </button>
+            )}
             <button className={`btn btn-line btn-square${wished ? " is-on" : ""}`} aria-label={wished ? "Прибрати з обраного" : "Додати в обране"} aria-pressed={wished} onClick={() => toggleWish(p.slug)}>
               <IconHeart filled={wished} />
             </button>
@@ -188,12 +199,19 @@ export function ProductView({ product: p, category, initialColour }: { product: 
         <div className="buybar-info">
           <span>{p.name}</span>
           <span>
-            {formatPrice(p.price)} · {size ?? "оберіть розмір"}
+            {formatPrice(p.price)}
+            {!onRequest && ` · ${size ?? "оберіть розмір"}`}
           </span>
         </div>
-        <button className="btn btn-dark" onClick={buy} tabIndex={showBar ? 0 : -1}>
-          {added ? <IconCheck /> : "В кошик"}
-        </button>
+        {onRequest ? (
+          <a className="btn btn-dark" href={site.managerUrl} target="_blank" rel="noopener noreferrer" tabIndex={showBar ? 0 : -1}>
+            Запитати
+          </a>
+        ) : (
+          <button className="btn btn-dark" onClick={buy} tabIndex={showBar ? 0 : -1}>
+            {added ? <IconCheck /> : "В кошик"}
+          </button>
+        )}
       </div>
 
       {zoom !== null && (

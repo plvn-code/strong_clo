@@ -52,7 +52,7 @@ export async function POST(req: Request) {
   const lines = raw
     .map((l: Record<string, unknown>) => {
       const p = getProduct(str(l.slug, 80));
-      if (!p) return null;
+      if (!p || p.price === null) return null; // «ціна за запитом» — only via the manager
       const colour = p.colours.find((x) => x.name === str(l.colour, 40));
       const size = p.sizes.find((s) => s === str(l.size, 20));
       if (!colour || !size) return null;
