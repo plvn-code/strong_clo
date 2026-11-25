@@ -92,7 +92,7 @@ export const COLOUR_FAMILIES = [
   { id: "beige", name: "Бежевий", hex: "#cdb89c", match: /беж/i },
 ] as const;
 
-export const SIZES = ["XS/S", "M/L", "One size"] as const;
+export const SIZES = ["XS", "S", "M", "L", "One size"] as const;
 
 export interface Query {
   c?: string;
